@@ -1,15 +1,15 @@
-import { API_URL } from "@/lib/env";
-
 /**
- * Client-side API helper. Uses fetch with credentials so the httpOnly
- * session cookie is sent on cross-origin calls to the API.
+ * Client-side API helper. Calls the API through the same origin so cookies
+ * and CORS never get in the way. In dev the Next dev server proxies `/api/*`
+ * to the Fastify backend (see rewrites in next.config); in production Caddy
+ * routes `/api/*` to the API process.
  */
 export async function clientApi<T = any>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body && typeof init.body === "string" && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
-  const res = await fetch(`${API_URL}${path}`, {
+  const res = await fetch(`/api${path}`, {
     ...init,
     headers,
     credentials: "include",
