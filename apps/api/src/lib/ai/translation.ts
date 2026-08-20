@@ -1,6 +1,7 @@
 import { prisma } from "@wishubest/db";
 import { decryptSecret } from "../crypto";
 import { loadConfig } from "../../config";
+import { HttpError } from "../httpError";
 
 export interface TranslationResult {
   translatedText: string;
@@ -22,7 +23,7 @@ export async function translateWithActiveSetting(
     orderBy: { updatedAt: "desc" },
   });
   if (!setting) {
-    throw new Error("ai_translation_not_configured");
+    throw new HttpError(400, "ai_translation_not_configured");
   }
 
   const apiKey = decryptSecret(setting.apiKeyEncrypted, config.dbEncryptionKey);

@@ -212,7 +212,7 @@ export async function registerChatRoutes(app: FastifyInstance) {
     if (!(await canAccessThread(request, message.thread))) throw forbidden("not_thread_participant");
 
     // Do not translate your own messages — only the other party's.
-    if (message.senderId === request.auth!.userId) throw badRequest("cannot_translate_own_message");
+    if (message.senderId === request.auth!.userId) throw forbidden("cannot_translate_own_message");
 
     // Cache hit → no AI call.
     const cached = await prisma.chatMessageTranslation.findUnique({

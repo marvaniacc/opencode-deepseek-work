@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { api } from "@/lib/api";
 import { DashboardShell, AppLogo, SidebarUser } from "@wishubest/ui";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { NotificationsBell } from "@/components/NotificationsBell";
 
 export const dynamic = "force-dynamic";
 
@@ -74,7 +75,12 @@ export default async function DashboardLayout({
       items={items.map((i) => ({ ...i, label: t(i.label, i.label), icon: i.icon }))}
       brand={<AppLogo />}
       footer={<SidebarUser name={profileName} sub={user.email} />}
-      topbar={<LocaleSwitcher locale={locale} />}
+      topbar={
+        <div className="flex items-center gap-2">
+          <NotificationsBell role={role} locale={locale} />
+          <LocaleSwitcher locale={locale} />
+        </div>
+      }
     >
       {children}
     </DashboardShell>
