@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "./utils";
+import { Icon, IconName } from "./icons";
 
 export function ChatBubble({
   mine,
@@ -35,7 +36,7 @@ export function EmptyState({
   description,
   action,
 }: {
-  icon?: "doc" | "chat" | "calendar" | "search";
+  icon?: IconName;
   title: string;
   description?: string;
   action?: React.ReactNode;
@@ -43,27 +44,7 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--bg-subtle)] text-[var(--fg-subtle)]">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="h-5 w-5">
-          {icon === "chat" && <path d="M21 12a8.5 8.5 0 0 1-8.5 8.5H4l2-3.5A8.5 8.5 0 1 1 21 12Z" />}
-          {icon === "calendar" && (
-            <>
-              <rect x="3.5" y="5" width="17" height="16" rx="2.5" />
-              <path d="M3.5 10h17M8 3v4M16 3v4" />
-            </>
-          )}
-          {icon === "search" && (
-            <>
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-3.5-3.5" />
-            </>
-          )}
-          {icon === "doc" && (
-            <>
-              <path d="M6 3h8l5 5v13H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
-              <path d="M14 3v5h5M9 13h6M9 17h4" />
-            </>
-          )}
-        </svg>
+        <Icon name={icon} className="h-5 w-5" />
       </div>
       <div>
         <p className="text-sm font-medium text-[var(--fg)]">{title}</p>

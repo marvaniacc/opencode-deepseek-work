@@ -23,6 +23,18 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M14 3v5h5M9 13h6M9 17h4" />
     </>
   ),
+  document: (
+    <>
+      <path d="M6 3h9l4 4v14H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
+      <path d="M14 3v5h5M9 12h6M9 16h4" />
+    </>
+  ),
+  download: (
+    <>
+      <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5" />
+      <path d="M4 19h16" />
+    </>
+  ),
   star: <path d="m12 3 2.7 5.6 6.3.8-4.6 4.3 1.2 6.1L12 17.2 6.4 19.8l1.2-6.1L3 9.4l6.3-.8L12 3Z" />,
   settings: (
     <>
