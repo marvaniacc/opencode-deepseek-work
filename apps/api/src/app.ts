@@ -1,6 +1,7 @@
 import "dotenv/config";
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import multipart from "@fastify/multipart";
 import { loadConfig } from "./config";
 import { authPlugin } from "./plugins/auth";
 import { errorPlugin } from "./plugins/error";
@@ -18,6 +19,7 @@ export async function buildApp() {
     origin: config.webUrl,
     credentials: true,
   });
+  await app.register(multipart, { limits: { fileSize: 25 * 1024 * 1024 } });
   await app.register(errorPlugin);
   await app.register(authPlugin);
   await registerRoutes(app);
