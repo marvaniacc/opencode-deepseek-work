@@ -1,0 +1,23 @@
+{
+  "name": "wishubest",
+  "private": true,
+  "version": "0.1.0",
+  "description": "WishUBest — medical marketplace MVP (doctor booking, chat with AI translation, patient medical documents)",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:api": "pnpm --filter @wishubest/api dev",
+    "dev:web": "pnpm --filter @wishubest/web dev",
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @wishubest/api test",
+    "db:generate": "pnpm --filter @wishubest/db generate",
+    "db:migrate": "pnpm --filter @wishubest/db migrate",
+    "db:seed": "pnpm --filter @wishubest/db seed",
+    "db:setup": "pnpm db:generate && pnpm db:migrate && pnpm db:seed"
+  }
+}
