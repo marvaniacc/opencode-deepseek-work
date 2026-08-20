@@ -4,6 +4,7 @@ import { api } from "@/lib/api";
 import { AppLogo, Badge, Button, Icon, formatMoney, formatDate } from "@wishubest/ui";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { BookPanel } from "@/components/BookPanel";
+import { StartChatButton } from "@/components/StartChatButton";
 
 export const dynamic = "force-dynamic";
 
@@ -168,7 +169,10 @@ export default async function DoctorDetailPage({
           {/* Right: booking panel */}
           <div className="lg:sticky lg:top-20 lg:self-start">
             {session ? (
-              <BookPanel doctorId={id} services={d.services} symbol={symbol} locale={locale} />
+              <div className="space-y-4">
+                <BookPanel doctorId={id} services={d.services} symbol={symbol} locale={locale} />
+                <StartChatButton providerId={id} locale={locale} />
+              </div>
             ) : (
               <div className="rounded-[var(--radius)] border border-[var(--border)] p-6 text-center">
                 <Icon name="lock" className="mx-auto h-6 w-6 text-[var(--fg-subtle)]" />
