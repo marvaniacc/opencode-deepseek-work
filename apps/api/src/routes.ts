@@ -6,6 +6,7 @@ import { registerMarketplaceRoutes } from "./modules/marketplace/routes";
 import { registerBookingRoutes } from "./modules/booking/routes";
 import { registerPaymentRoutes } from "./modules/payment/routes";
 import { registerChatRoutes } from "./modules/chat/routes";
+import { registerDocumentRoutes } from "./modules/documents/routes";
 
 export async function registerRoutes(app: FastifyInstance) {
   await registerAuthRoutes(app);
@@ -15,4 +16,5 @@ export async function registerRoutes(app: FastifyInstance) {
   await registerBookingRoutes(app);
   await registerPaymentRoutes(app);
   await registerChatRoutes(app);
+  await registerDocumentRoutes(app);
 }

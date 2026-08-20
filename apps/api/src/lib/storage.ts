@@ -68,9 +68,9 @@ export function createDownloadTicket(
   ttlSeconds: number
 ): { token: string; expiresAt: number } {
   const expiresAt = Math.floor(Date.now() / 1000) + ttlSeconds;
-  const payload = `${fileKey}.${expiresAt}`;
+  const payload = JSON.stringify({ fileKey, exp: expiresAt });
   const sig = crypto.createHmac("sha256", secret).update(payload).digest("hex");
-  const token = Buffer.from(`${payload}.${sig}`).toString("base64url");
+  const token = Buffer.from(JSON.stringify({ p: payload, s: sig })).toString("base64url");
   return { token, expiresAt };
 }
 
@@ -79,16 +79,18 @@ export function verifyDownloadTicket(
   token: string
 ): { fileKey: string; expiresAt: number } | null {
   try {
-    const raw = Buffer.from(token, "base64url").toString("utf8");
-    const [fileKey, exp, sig] = raw.split(".");
-    if (!fileKey || !exp || !sig) return null;
-    const expected = crypto.createHmac("sha256", secret).update(`${fileKey}.${exp}`).digest("hex");
+    const parsed = JSON.parse(Buffer.from(token, "base64url").toString("utf8"));
+    const payload: string = parsed.p;
+    const sig: string = parsed.s;
+    if (typeof payload !== "string" || typeof sig !== "string") return null;
+    const expected = crypto.createHmac("sha256", secret).update(payload).digest("hex");
     const a = Buffer.from(sig);
     const b = Buffer.from(expected);
     if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
-    const expiresAt = parseInt(exp, 10);
-    if (Number.isNaN(expiresAt) || expiresAt < Math.floor(Date.now() / 1000)) return null;
-    return { fileKey, expiresAt };
+    const data = JSON.parse(payload) as { fileKey: string; exp: number };
+    if (!data.fileKey || typeof data.exp !== "number") return null;
+    if (data.exp < Math.floor(Date.now() / 1000)) return null;
+    return { fileKey: data.fileKey, expiresAt: data.exp };
   } catch {
     return null;
   }
