@@ -71,6 +71,8 @@ pnpm dev                        # API on :8080, Web on :3000
 | --------------------- | ------------------------------------------------------ |
 | `DATABASE_URL`        | PostgreSQL connection string                           |
 | `JWT_SECRET`          | Long random secret for auth tokens                     |
+| `DB_ENCRYPTION_KEY`   | Secret used to encrypt AI API keys at rest (AES-256-GCM) |
+| `TEST_DATABASE_URL`   | PostgreSQL connection string used by the Vitest suite  |
 | `API_URL`             | Absolute URL of the API (used by the web app)          |
 | `WEB_URL`             | Absolute URL of the web app (CORS / cookies)           |
 | `STORAGE_DRIVER`      | `local` (default) or `s3` (MinIO)                      |
@@ -83,7 +85,7 @@ pnpm dev                        # API on :8080, Web on :3000
 pnpm dev            # run API + web in parallel
 pnpm build          # typecheck + build all packages
 pnpm typecheck      # typecheck all packages
-pnpm test           # API tests (Vitest), incl. chat-translation & document-access suites
+pnpm test           # API tests (Vitest, 49 tests), incl. chat-translation & document-access suites
 pnpm db:migrate     # apply Prisma migrations
 pnpm db:seed        # seed demo data
 ```
