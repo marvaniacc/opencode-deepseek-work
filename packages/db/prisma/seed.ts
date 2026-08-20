@@ -1,7 +1,19 @@
 import { PrismaClient, ProviderStatus, KycStatus, ServiceMode } from "../src/generated/client";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 const prisma = new PrismaClient();
+
+// Match the API's DB_ENCRYPTION_KEY fallback so seeded API keys are decryptable.
+const DB_KEY = process.env.DB_ENCRYPTION_KEY ?? process.env.JWT_SECRET ?? "dev-only-insecure-key";
+
+function encryptSecret(plaintext: string): string {
+  const iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv("aes-256-gcm", crypto.createHash("sha256").update(DB_KEY).digest(), iv);
+  const enc = Buffer.concat([cipher.update(plaintext, "utf8"), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return `${iv.toString("base64")}.${tag.toString("base64")}.${enc.toString("base64")}`;
+}
 
 async function main() {
   const adminEmail = process.env.SEED_ADMIN_EMAIL ?? "admin@wishubest.local";
@@ -172,6 +184,23 @@ async function main() {
       locale: "fa",
       patientProfile: { create: { firstName: "Ali", lastName: "Rezaei", phone: "+98 912 000 0000" } },
     },
+  });
+
+  // ---- Default AI translation setting (mock provider so the demo works
+  // without real API keys; admins can swap in openai/anthropic in the UI) ----
+  await prisma.aiTranslationSetting.deleteMany({});
+  await prisma.aiTranslationSetting.createMany({
+    data: [
+      {
+        provider: "mock",
+        apiKeyEncrypted: encryptSecret("mock"),
+        modelName: "mock-translator",
+        systemPrompt:
+          "Translate the following text to {target_locale}. Return only the translation. Keep the medical/casual tone.",
+        active: true,
+      },
+    ],
+    skipDuplicates: true,
   });
 
   console.log("Seed complete.");

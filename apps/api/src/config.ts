@@ -19,6 +19,7 @@ export interface AppConfig {
   };
   docSignedUrlTtlSeconds: number;
   databaseUrl: string;
+  dbEncryptionKey: string;
 }
 
 function int(name: string, fallback: number): number {
@@ -59,5 +60,6 @@ export function loadConfig(): AppConfig {
     },
     docSignedUrlTtlSeconds: int("DOC_SIGNED_URL_TTL_SECONDS", 300),
     databaseUrl: process.env.DATABASE_URL ?? "",
+    dbEncryptionKey: process.env.DB_ENCRYPTION_KEY ?? process.env.JWT_SECRET ?? "dev-only-insecure-key",
   };
 }
