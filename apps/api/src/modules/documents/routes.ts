@@ -37,6 +37,10 @@ export async function registerDocumentRoutes(app: FastifyInstance) {
     const buffer = await data.toBuffer();
     if (buffer.length > MAX_SIZE) throw badRequest("file_too_large");
 
+    const fields = data.fields as Record<string, any>;
+    const title = typeof fields?.title?.value === "string" ? fields.title.value : null;
+    const description = typeof fields?.description?.value === "string" ? fields.description.value : null;
+
     const key = `medical/${patient.id}/${Date.now()}-${data.filename.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
     await storage().put(key, buffer, data.mimetype);
 
@@ -47,8 +51,8 @@ export async function registerDocumentRoutes(app: FastifyInstance) {
         originalFilename: data.filename,
         mimeType: data.mimetype,
         sizeBytes: buffer.length,
-        title: (request.query as any).title ?? null,
-        description: (request.query as any).description ?? null,
+        title,
+        description,
       },
     });
 
