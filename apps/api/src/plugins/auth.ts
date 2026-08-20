@@ -10,7 +10,6 @@ declare module "fastify" {
     auth: { userId: string; role: string; jti: string } | null;
     user: any | null;
     authenticate: (reply: FastifyReply) => Promise<void>;
-    requireRole: (reply: FastifyReply, roles: string[]) => void;
   }
 }
 
@@ -75,13 +74,6 @@ export const authPlugin = fp(async (app: FastifyInstance) => {
 
     this.auth = { userId: user.id, role: user.role, jti: session.jti };
     this.user = user;
-  });
-
-  app.decorateRequest("requireRole", function (this: FastifyRequest, reply: FastifyReply, roles: string[]) {
-    if (!this.auth || !roles.includes(this.auth.role)) {
-      reply.code(403).send({ error: "forbidden" });
-      return;
-    }
   });
 });
 
