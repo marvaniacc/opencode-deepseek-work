@@ -1,9 +1,0 @@
-process.env.NODE_ENV = "test";
-process.env.DATABASE_URL = process.env.TEST_DATABASE_URL ?? "postgresql://postgres:postgres@localhost:5432/wishubest_test";
-process.env.JWT_SECRET = "test-secret-0123456789abcdef0123456789abcdef";
-process.env.DB_ENCRYPTION_KEY = "test-encryption-key-0123456789abcdef0123456789";
-process.env.STORAGE_DRIVER = "local";
-process.env.STORAGE_LOCAL_DIR = `/tmp/wishubest-test-storage-${process.pid}`;
-process.env.DOC_SIGNED_URL_TTL_SECONDS = "300";
-process.env.API_PORT = "0";
-process.env.WEB_URL = "http://localhost:3000";
