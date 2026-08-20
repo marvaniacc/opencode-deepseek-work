@@ -4,6 +4,7 @@ import { registerAdminRoutes } from "./modules/admin/routes";
 import { registerProviderRoutes } from "./modules/provider/routes";
 import { registerMarketplaceRoutes } from "./modules/marketplace/routes";
 import { registerBookingRoutes } from "./modules/booking/routes";
+import { registerPaymentRoutes } from "./modules/payment/routes";
 
 export async function registerRoutes(app: FastifyInstance) {
   await registerAuthRoutes(app);
@@ -11,4 +12,5 @@ export async function registerRoutes(app: FastifyInstance) {
   await registerProviderRoutes(app);
   await registerMarketplaceRoutes(app);
   await registerBookingRoutes(app);
+  await registerPaymentRoutes(app);
 }
